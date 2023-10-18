@@ -72,6 +72,7 @@ inquirer
   .then(async(answers) => {
     // Use user feedback for... whatever!!
     const {pageName='demo', isUseRouter} = answers;
+    console.log(answers)
     // 在page文件夹下生成一个名为pageName的目录，里边包含需要的模板
     // 项目的目录名
     const pagePath = resolve(`src/pages/${pageName}`)
