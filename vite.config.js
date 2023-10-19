@@ -8,17 +8,17 @@ import path from 'path';
 
 // 在 transformIndexHtml 钩子上动态引入打包入口文件
 const getEntry = code => code.replace(
-  /__MAIN__/,
+  /__ENTRY__/,
   `/src/pages/${process.env.ENTRY_PATH}/main.js`,
 );
 
 // pub 时补齐资源链接
-const getBase = () => {
-  if (process.env.A_ENV === 'prod') return `//ugd.gtimg.com/h5/activity/vg_activity/${process.env.ENTRY_PATH}/`;
-  if (process.env.A_ENV === 'pre') return `//ugd.gtimg.com/h5/preactivity/vg_activity/${process.env.ENTRY_PATH}/`;
-  if (process.env.A_ENV === 'test') return `//ugd.gtimg.com/h5/tactivity/vg_activity/${process.env.ENTRY_PATH}/`;
-  return `/${process.env.ENTRY_PATH}/`;
-};
+// const getBase = () => {
+//   if (process.env.A_ENV === 'prod') return `//ugd.gtimg.com/h5/activity/vg_activity/${process.env.ENTRY_PATH}/`;
+//   if (process.env.A_ENV === 'pre') return `//ugd.gtimg.com/h5/preactivity/vg_activity/${process.env.ENTRY_PATH}/`;
+//   if (process.env.A_ENV === 'test') return `//ugd.gtimg.com/h5/tactivity/vg_activity/${process.env.ENTRY_PATH}/`;
+//   return `/${process.env.ENTRY_PATH}/`;
+// };
 
 export default defineConfig({
   root: __dirname,
@@ -53,10 +53,10 @@ export default defineConfig({
     // }),
     // Unocss({}),
   ],
-  base: getBase(),
+  // base: `/${process.env.ENTRY_PATH}/`,
   build: {
     rollupOptions: {
-      external: ['__MAIN__'],
+      // external: ['__ENTRY__'],
       output: {
         // 最小化拆分包
         manualChunks: (id) => {
@@ -79,7 +79,7 @@ export default defineConfig({
   },
   publicPath: '/',
   define: {
-    'process.env.NODE_ENV': `'${process.env.NODE_ENV}'`,
+    // 'process.env.NODE_ENV': `'${process.env.NODE_ENV}'`,
   },
   resolve: {
     alias: [
@@ -87,16 +87,10 @@ export default defineConfig({
     ],
   },
   optimizeDeps: {
-    exclude: ['__MAIN__'], // 排除 __MAIN__
+    exclude: ['__ENTRY__'], // 排除 __ENTRY__
   },
   server: {
-    hmr: {
-      protocol: 'ws',
-      host: 'localhost',
-    },
-
     port: 8080,
     open: true,
-    cors: true,
   },
 });
