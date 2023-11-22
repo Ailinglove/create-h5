@@ -4,9 +4,11 @@
 </script>
 
 <template>
-  <div class="demo">
-    demo组件
+  <div>
+    <Tab />
+    <RouterView />
   </div>
+  <!-- v-loading指令的实现 https://juejin.cn/post/7281825352530296843  -->
 </template>
 
 <style lang="scss" >
