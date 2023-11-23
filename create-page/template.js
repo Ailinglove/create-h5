@@ -26,6 +26,9 @@ import { createApp } from 'vue';
 ${isUsePinia ? `import { createPinia } from 'pinia';` : ''}
 ${isUseRouter ? `import router from './router';` : ''}
 import App from './App.vue';
+import 'uno.css'
+
+import '@common/utils/rem'
 import '@common/styles/reset.scss';
 
 const app = createApp(App);
