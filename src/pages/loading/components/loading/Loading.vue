@@ -1,20 +1,37 @@
 <script setup>
-const title = ref('');
-const setTitle = (val)=>{
-  title.value = val;
+import { LottieAnimation } from "lottie-web-vue"
+import LoadingJSON from "./imgs/Animation - 1700710770742.json"
+
+const loadingParams = ref({});
+
+const setTParams = (val)=>{
+  loadingParams.value = val;
 }
 
 defineExpose({
-  setTitle,
-  title
+  setTParams,
 })
+
 </script>
 
 <template>
   <div class="h-100%">
     <div class="blank-loading">
       <div class="loading-img">
-        <i />
+        <span v-if="loadingParams.title">        
+          {{ loadingParams.title }}
+        </span>
+
+        <i v-if="loadingParams.type==='tx'" />
+
+        <LottieAnimation
+          v-else
+          ref="anim"
+          :animation-data="LoadingJSON"
+          :loop="true"
+          :auto-play="true"
+          :speed="1"
+        />
       </div>
     </div>
   </div>
@@ -42,6 +59,7 @@ defineExpose({
     height: 100%;
     z-index: 999;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;

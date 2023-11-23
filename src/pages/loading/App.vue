@@ -1,6 +1,5 @@
 
 <script setup>
-// import { ref } from 'vue'
 </script>
 
 <template>
@@ -14,7 +13,7 @@
 <style lang="scss" >
 #app {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
