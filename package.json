@@ -21,11 +21,14 @@
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
+    "@babel/generator": "^7.23.4",
+    "@babel/traverse": "^7.23.4",
     "@vitejs/plugin-vue": "^4.3.4",
     "less": "^4.2.0",
     "sass": "^1.69.4",
     "unplugin-auto-import": "^0.16.7",
     "unplugin-vue-components": "^0.25.2",
+    "vconsole": "^3.15.1",
     "vite": "^4.4.9"
   }
 }

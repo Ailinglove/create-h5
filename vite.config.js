@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import Components from 'unplugin-vue-components/vite';
-// import AutoImport from 'unplugin-auto-import/vite';
+
 import AutoImport from 'unplugin-auto-import/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-import { VantResolver } from 'unplugin-vue-components/resolvers';
+import consolePlugin from './src/common/plugins/console-plugin'
 import Unocss from 'unocss/vite';
 import path from 'path';
 
@@ -61,6 +61,10 @@ export default defineConfig({
       dts: 'src/components.d.ts', // 自定义生成.d.ts位置
     }),
     Unocss({}),
+    consolePlugin({
+       preTip:'😈😈😈'
+    }),
+
   ],
   // base: `/${process.env.ENTRY_PATH}/`,
   build: {
@@ -86,7 +90,7 @@ export default defineConfig({
       },
     },
   },
-  publicPath: '/',
+  publicPath: './',
   define: {
     // 'process.env.NODE_ENV': `'${process.env.NODE_ENV}'`,
   },
@@ -94,6 +98,8 @@ export default defineConfig({
     alias: [
       { find: '@common', replacement: path.resolve(__dirname, '/src/common') },
       { find: '@pages', replacement: path.resolve(__dirname, '/src/pages') },
+      { find: '@logger', replacement: path.resolve(__dirname, '/src/common/logger/index') },
+
 
     ],
   },

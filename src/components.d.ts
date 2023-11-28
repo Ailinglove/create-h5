@@ -7,12 +7,14 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    App: typeof import('./pages/count-down-circle/App.vue')['default']
+    App: typeof import('./pages/console-plugin/App.vue')['default']
     Circle: typeof import('./pages/count-down-circle/views/Circle.vue')['default']
+    copy: typeof import('./pages/console-plugin/components/List copy.vue')['default']
     GetDetails: typeof import('./pages/loading/views/GetDetails.vue')['default']
     Huawei: typeof import('./pages/loading/views/Huawei.vue')['default']
     Index: typeof import('./pages/loading/views/Index.vue')['default']
-    List: typeof import('./pages/loading/components/List.vue')['default']
+    List: typeof import('./pages/console-plugin/components/List.vue')['default']
+    Load: typeof import('./pages/console-plugin/components/Load.vue')['default']
     Loading: typeof import('./pages/loading/components/loading/Loading.vue')['default']
     Record: typeof import('./pages/loading/components/Record.vue')['default']
     Rongyao: typeof import('./pages/loading/views/Rongyao.vue')['default']
