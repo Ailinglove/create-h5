@@ -23,7 +23,7 @@ function getFilePath(filePath, lineNumber) {
 const DEFAULT_PRE_TIP = '🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀';
 const CONSOLE_FUN = 'console.log';
 
-export default function exportLogPlugin(options = {}) {
+export default function viteConsolePlugin(options = {}) {
   const {
     preTip = DEFAULT_PRE_TIP,
     endLine: enableEndLine = false,
@@ -39,45 +39,39 @@ export default function exportLogPlugin(options = {}) {
   function getPrefix(relativeFilename, lineNumber) {
     return `${preTip} ${relativeFilename ? '' : `line:${lineNumber} `}`;
   }
-  return {
-    name: 'console-plugin',
+  
+   return {
+    name: 'vite-console-plugin',
+    enforce: 'post',
     configResolved(config) {
       root = config.root;
     },
-    enforce: 'post',
     async transform(code, id) {
-      if (!filter(id)) return;
-      const rawSourcemap = this.getCombinedSourcemap();
+      if(!filter(id)) return
 
-      console.log('sourcemap',rawSourcemap)
-
-      const consumer = await new SourceMapConsumer(rawSourcemap);
       const ast = parse(code, {
         sourceType: 'unambiguous',
         sourceFilename: id,
       });
 
+      const rawSourcemap = this.getCombinedSourcemap();
+      const consumer = await new SourceMapConsumer(rawSourcemap);
 
       traverse(ast, {
-        CallExpression(path) {
+        CallExpression(path){
           const calleeCode = generate(path.node.callee).code;
-
-          if (calleeCode === CONSOLE_FUN) {
+          if(calleeCode === CONSOLE_FUN){
+            // 获取文件名
+            const relativeFilename = id.replace(`${root}/`, '').split('?')[0];
+            // 获取loc
+            const {line, column} = path.node?.loc?.start;
+            const { line: originStartLine } = consumer.originalPositionFor({ line, column }) || {};
             const nodeArgs = path.node.arguments;
-            const { loc } = path.node;
-
-            if (loc) {
-              const { line, column } = loc.start;
-              // 根据originalPositionFor 找到代码中原始的位置
-              const { line: originStartLine } = consumer.originalPositionFor({ line, column }) || {};
-              const relativeFilename = id.replace(`${root}/`, '').split('?')[0];
-
-              const startLineTipNode = stringLiteral(`${getPrefix(relativeFilename, originStartLine)}${getFilePath(relativeFilename, originStartLine)}\n`);
-              nodeArgs.unshift(startLineTipNode);
-            }
+            const startLineTipNode = stringLiteral(`${getPrefix(relativeFilename, originStartLine)}${getFilePath(relativeFilename, originStartLine)}\n`);
+            nodeArgs.unshift(startLineTipNode)
           }
-        },
-      });
+        }
+      })
 
       const { code: newCode, map } = generate(ast, {
         sourceFileName: id,
@@ -89,6 +83,6 @@ export default function exportLogPlugin(options = {}) {
         code: newCode,
         map,
       };
-    },
+    }
   };
 }
